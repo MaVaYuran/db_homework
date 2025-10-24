@@ -1,43 +1,69 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import {
+	useUpdateTodo,
+	useCreateTodo,
+	useDeleteTodo,
+	useRequestGetTodos,
+	useToggleCompleted,
+	useSortTodos,
+	useFilteredTodos,
+} from './hooks';
+import { CreateForm } from './components/CreateForm';
+import { TodoItem } from './components/TodoItem';
+import { ToggleTheme } from './components/ToggleTheme';
 import styles from './App.module.css';
 
 const TODO_URL = import.meta.env.VITE_TODO_URL;
 
 export const App = () => {
-	const [todos, setTodos] = useState([]);
-	const [error, setError] = useState('');
-	const [isLoading, setIsLoading] = useState(false);
 	const [isDarkMode, setIsDarkMode] = useState(false);
+	const [searchQuery, setSearchQuery] = useState('');
 
-	useEffect(() => {
-		setIsLoading(true);
-		fetch(TODO_URL)
-			.then((response) => response.json())
-			.then((loadedTodos) => setTodos(loadedTodos))
-			.catch((error) => setError(error.message))
-			.finally(() => setIsLoading(false));
-	}, []);
+	const { todos, error, isLoading, setTodos } = useRequestGetTodos(TODO_URL);
+	const { title, setTitle, createTodoHandler } = useCreateTodo(TODO_URL, setTodos);
+	const { editingId, setEditingId, editingTitle, setEditingTitle, updateTodoHandler } =
+		useUpdateTodo(TODO_URL, setTodos);
+	const { deleteTodoHandler } = useDeleteTodo(TODO_URL, setTodos);
+	const { toggleCompleted } = useToggleCompleted(TODO_URL, setTodos);
+	const { sortTodos } = useSortTodos(todos, setTodos);
+	const { filteredTodos } = useFilteredTodos(todos, searchQuery);
 
 	return (
 		<div className={`${styles.app} ${isDarkMode ? styles.dark : ''}`}>
-			<button
-				className={styles.modeBtn}
-				type="button"
-				onClick={() => setIsDarkMode(!isDarkMode)}
-			>
-				{isDarkMode ? 'Светлая тема' : 'Тёмная тема'}
+			<ToggleTheme isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+			<CreateForm
+				title={title}
+				setTitle={setTitle}
+				createTodoHandler={createTodoHandler}
+			/>
+			<button className={styles.btn} onClick={sortTodos} type="button">
+				Сортировать задачи
 			</button>
-			<h3 className={styles.title}>Todos {isLoading && 'are loading'}:</h3>
+			<input
+				className={styles.input}
+				type="text"
+				value={searchQuery}
+				onChange={({ target }) => setSearchQuery(target.value)}
+				placeholder="Найти задачу"
+			/>
+			<h3 className={styles.title}>Список дел {isLoading && 'загружается'}:</h3>
 			{error && <div className={styles.error}>{error}</div>}
 			{isLoading ? (
 				<div className={styles.loader}></div>
 			) : (
 				<ol>
-					{todos.map(({ id, title, body }) => (
-						<li className={styles.card} key={id}>
-							<h4 className={styles.cardTitle}>{title}</h4>
-							<p className={styles.cardText}>{body}</p>
-						</li>
+					{(searchQuery.trim() ? filteredTodos : todos).map((todo) => (
+						<TodoItem
+							key={todo.id}
+							{...todo}
+							editingId={editingId}
+							editingTitle={editingTitle}
+							setEditingId={setEditingId}
+							setEditingTitle={setEditingTitle}
+							updateTodoHandler={updateTodoHandler}
+							deleteTodoHandler={deleteTodoHandler}
+							toggleCompleted={toggleCompleted}
+						/>
 					))}
 				</ol>
 			)}

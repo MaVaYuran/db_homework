@@ -1,0 +1,51 @@
+.card {
+	display: flex;
+	justify-content: space-between;
+	max-width: 88%;
+	margin: 10px auto;
+	padding: 15px 20px;
+	border-radius: 12px;
+	background-color: var(--card-bg);
+	color: var(--card-text);
+}
+
+.card:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cardContent {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.cardTitle {
+	margin: 0;
+	color: var(--card-text);
+}
+
+.disabled {
+	color: var(--card-disabled);
+}
+
+.updateBtn {
+	margin-right: 10px;
+	cursor: pointer;
+	border: none;
+	border-radius: 6px;
+	font-size: 1.1em;
+	background-color: transparent;
+	color: inherit;
+}
+
+.updateBtn:hover {
+	border: 1px solid #cbcbcb;
+}
+
+.btn {
+	padding: 5px 10px;
+	border-radius: 8px;
+	border: none;
+	cursor: pointer;
+}

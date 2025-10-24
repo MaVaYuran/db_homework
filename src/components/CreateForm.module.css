@@ -1,0 +1,22 @@
+.createForm {
+	margin-bottom: 20px;
+}
+
+.input {
+	padding: 5px 10px;
+	border-radius: 8px;
+	border: none;
+	background-color: var(--input-bg);
+	color: var(--input-text);
+	margin: 10px;
+}
+
+.btn {
+	padding: 5px 10px;
+	border-radius: 8px;
+	border: none;
+	cursor: pointer;
+	background-color: var(--btn-bg);
+	color: var(--btn-text);
+	margin: 5px;
+}
