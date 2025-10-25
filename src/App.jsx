@@ -7,6 +7,7 @@ import {
 	useToggleCompleted,
 	useSortTodos,
 	useFilteredTodos,
+	useDebounce,
 } from './hooks';
 import { CreateForm } from './components/CreateForm';
 import { TodoItem } from './components/TodoItem';
@@ -26,7 +27,8 @@ export const App = () => {
 	const { deleteTodoHandler } = useDeleteTodo(TODO_URL, setTodos);
 	const { toggleCompleted } = useToggleCompleted(TODO_URL, setTodos);
 	const { sortTodos } = useSortTodos(todos, setTodos);
-	const { filteredTodos } = useFilteredTodos(todos, searchQuery);
+	const debouncedQuery = useDebounce(searchQuery, 300);
+	const { filteredTodos } = useFilteredTodos(todos, debouncedQuery);
 
 	return (
 		<div className={`${styles.app} ${isDarkMode ? styles.dark : ''}`}>

@@ -1,3 +1,29 @@
 {
-	"todos": []
+  "todos": [
+    {
+      "title": "прибраться в комнате",
+      "completed": false,
+      "id": 1
+    },
+    {
+      "title": "доделать д/3",
+      "completed": false,
+      "id": 2
+    },
+    {
+      "title": "доехать до дачи",
+      "completed": false,
+      "id": 3
+    },
+    {
+      "title": "доесть ужин",
+      "completed": false,
+      "id": 4
+    },
+    {
+      "title": "мтомтлот",
+      "completed": false,
+      "id": 5
+    }
+  ]
 }
